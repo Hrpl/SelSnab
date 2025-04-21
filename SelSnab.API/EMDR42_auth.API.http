@@ -1,0 +1,6 @@
+@EMDR42_auth.API_HostAddress = http://localhost:5188
+
+GET {{EMDR42_auth.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
