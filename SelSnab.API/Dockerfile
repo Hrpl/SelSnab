@@ -11,19 +11,19 @@ EXPOSE 5188
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Development
 WORKDIR /src
-COPY ["EMDR42_auth.API/EMDR42_auth.API.csproj", "EMDR42_auth.API/"]
-RUN dotnet restore "./EMDR42_auth.API/EMDR42_auth.API.csproj"
+COPY ["SelSnab.API/SelSnab.API.csproj", "SelSnab.API/"]
+RUN dotnet restore "./SelSnab.API/SelSnab.API.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "./EMDR42_auth.API/EMDR42_auth.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./SelSnab.API/SelSnab.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Development
-RUN dotnet publish "./EMDR42_auth.API/EMDR42_auth.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./SelSnab.API/SelSnab.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Этот этап используется в рабочей среде или при запуске из VS в обычном режиме (по умолчанию, когда конфигурация отладки не используется)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "EMDR42_auth.API.dll"]
+ENTRYPOINT ["dotnet", "SelSnab.API.dll"]
