@@ -1,0 +1,53 @@
+version: '3.8'
+
+networks:
+  network:
+   driver: bridge
+
+volumes:
+  postgres_data:
+
+services:
+
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - "443:443"
+      - "80:80"
+    networks:
+      - network
+    depends_on:
+      - react
+
+  api:
+    build:
+      context: .
+      dockerfile: SelSnab.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Release
+      - ASPNETCORE_HTTP_PORTS=5188
+    ports:
+      - '5188:5188'
+    networks:
+      - network
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  db:
+    image: postgres:latest
+    container_name: PostgreSQL
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2208
+      POSTGRES_DB: SelSnab
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - network
