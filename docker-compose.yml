@@ -21,7 +21,7 @@ services:
     networks:
       - network
     depends_on:
-      - react
+      - api
 
   api:
     build:
