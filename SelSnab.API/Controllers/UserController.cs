@@ -29,8 +29,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPatch("block")]
-    [SwaggerOperation(Summary = "Блокировка пользователя")]
-    public async Task<ActionResult> Block([FromQuery] string email)
+    [SwaggerOperation(Summary = "Блокировка пользователя. Если block = true, пользователя надо заблокировать, если false то разблокировать ")]
+    public async Task<ActionResult> Block([FromQuery] string email, bool block)
     {
         if (string.IsNullOrEmpty(email))
         {
@@ -44,7 +44,7 @@ public class UserController : ControllerBase
 
         try
         {
-            _userService.BlockedUser(email);
+            _userService.BlockedUser(email, block);
 
             return NoContent();
         }

@@ -57,5 +57,5 @@ public interface IUserRepository
     /// <returns></returns>
     public Task<string?> GetSaltByEmail(string email);
 
-    public void BlockedUser(string email);
+    public void BlockedUser(string email, bool block);
 }

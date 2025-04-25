@@ -19,9 +19,9 @@ public class UserRepository : IUserRepository
         _cryptographyService = cryptographyService;
     }
 
-    public void BlockedUser(string email)
+    public void BlockedUser(string email, bool block)
     {
-        var query = _query.Query(TableName).Where("email", email).Update(new {is_blocked = true});
+        var query = _query.Query(TableName).Where("email", email).Update(new {is_blocked = block });
     }
 
 
